@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    characters: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Character' }]
 });
 
 userSchema.set('toJSON', {
