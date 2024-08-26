@@ -6,6 +6,7 @@ const app = express();
 const mongoose = require('mongoose');
 
 const usersRouter = require('./controllers/users');
+const charactersRouter = require('./controllers/characters');
 const profilesRouter = require('./controllers/profiles');
 
 mongoose.connect(process.env.MONGODB_URI);
@@ -18,6 +19,7 @@ app.use(express.json());
 
 // Routes go here
 app.use('/users', usersRouter);
+app.use('/users/:userId/characters', charactersRouter);
 app.use('/profiles', profilesRouter);
 
 app.listen(3000, () => {
