@@ -32,4 +32,16 @@ router.get('/', async (req, res) => {
     };
 });
 
+router.get('/:characterId', async (req, res) => {
+    try {
+        const character = await Character
+            .findById(req.params.characterId)
+        // .populate('dutiesComplete') <-- add once database for duties is populated
+        res.status(200).json(character);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json(err);
+    };
+});
+
 module.exports = router;
