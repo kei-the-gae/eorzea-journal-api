@@ -19,4 +19,17 @@ router.post('/', async (req, res) => {
     };
 });
 
+router.get('/', async (req, res) => {
+    try {
+        const user = await User
+            .findById(req.params.userId)
+            .populate('characters')
+        const characters = user.characters;
+        res.status(200).json(characters);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json(err);
+    };
+});
+
 module.exports = router;
