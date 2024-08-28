@@ -111,4 +111,17 @@ router.get('/:characterId/jobs', async (req, res) => {
     };
 });
 
+router.put('/:characterId/jobs/:jobId', async (req, res) => {
+    try {
+        const character = await Character.findById(req.params.characterId);
+        const job = character.jobs.id(req.params.jobId);
+        job.level = req.body.level;
+        await character.save();
+        res.status(200).json({ message: 'Ok' });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json(err);
+    };
+});
+
 module.exports = router;
