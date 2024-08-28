@@ -66,14 +66,14 @@ router.put('/:characterId', async (req, res) => {
 router.delete('/:characterId', async (req, res) => {
     try {
         const user = await User.findById(req.user._id);
-        // if (!user.characters.find(character => character._id === req.params.characterId)) (
-        //     res.status(403).send('You\'re not allowed to do that!')
-        // );
+        if (!user.characters.find(({ _id }) => _id.equals(req.params.characterId))) (
+            res.status(403).send('You\'re not allowed to do that!')
+        );
         // TODO: fix this auth check
-        await Character.findByIdAndDelete(req.params.characterId);
+        const deletedCharacter = await Character.findByIdAndDelete(req.params.characterId);
         user.characters.remove({ _id: req.params.characterId });
         await user.save();
-        res.status(200).json({ message: 'Ok' });
+        res.status(200).json(deletedCharacter);
     } catch (err) {
         console.log(err);
         res.status(500).json(err);
