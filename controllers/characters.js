@@ -44,4 +44,22 @@ router.get('/:characterId', async (req, res) => {
     };
 });
 
+router.put('/:characterId', async (req, res) => {
+    try {
+        console.log(req.user.characters);
+        if (!req.user.characters.find(character => character === req.params.characterId)) (
+            res.status(403).send('You\'re not allowed to do that!')
+        );
+        const updatedCharacter = await Character.findByIdAndUpdate(
+            req.params.characterId,
+            req.body,
+            { new: true },
+        );
+        res.status(200).json(updatedCharacter);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json(err);
+    };
+});
+
 module.exports = router;
