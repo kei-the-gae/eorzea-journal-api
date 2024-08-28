@@ -78,4 +78,24 @@ router.delete('/:characterId', async (req, res) => {
     };
 });
 
+router.post('/:characterId/jobs', async (req, res) => {
+    try {
+        const user = await User.findById(req.user._id);
+        if (!user.characters.find(({ _id }) => _id.equals(req.params.characterId))) {
+            return res.status(403).send('You\'re not allowed to do that!');
+        };
+        const character = await Character.findById(req.params.characterId);
+        if (character.jobs.find(({ name }) => name === req.body.name)) {
+            return res.status(409).send('Job already exists.');
+        };
+        character.jobs.push(req.body);
+        await character.save();
+        const newJob = character.jobs[character.jobs.length - 1];
+        res.status(201).json(newJob);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json(err);
+    };
+});
+
 module.exports = router;
