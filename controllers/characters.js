@@ -98,4 +98,17 @@ router.post('/:characterId/jobs', async (req, res) => {
     };
 });
 
+router.get('/:characterId/jobs', async (req, res) => {
+    try {
+        const character = await Character
+            .findById(req.params.characterId)
+            .populate('jobs');
+        const jobs = character.jobs;
+        res.status(200).json(jobs);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json(err);
+    };
+});
+
 module.exports = router;
