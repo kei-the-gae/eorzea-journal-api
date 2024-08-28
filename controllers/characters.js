@@ -47,10 +47,9 @@ router.get('/:characterId', async (req, res) => {
 router.put('/:characterId', async (req, res) => {
     try {
         const user = await User.findById(req.user._id);
-        // if (!user.characters.find(character => character._id === req.params.characterId)) (
-        //     res.status(403).send('You\'re not allowed to do that!')
-        // );
-        // TODO: fix this auth check
+        if (!user.characters.find(({ _id }) => _id.equals(req.params.characterId))) (
+            res.status(403).send('You\'re not allowed to do that!')
+        );
         const updatedCharacter = await Character.findByIdAndUpdate(
             req.params.characterId,
             req.body,
@@ -69,7 +68,6 @@ router.delete('/:characterId', async (req, res) => {
         if (!user.characters.find(({ _id }) => _id.equals(req.params.characterId))) (
             res.status(403).send('You\'re not allowed to do that!')
         );
-        // TODO: fix this auth check
         const deletedCharacter = await Character.findByIdAndDelete(req.params.characterId);
         user.characters.remove({ _id: req.params.characterId });
         await user.save();
