@@ -46,10 +46,11 @@ router.get('/:characterId', async (req, res) => {
 
 router.put('/:characterId', async (req, res) => {
     try {
-        console.log(req.user.characters);
-        if (!req.user.characters.find(character => character === req.params.characterId)) (
-            res.status(403).send('You\'re not allowed to do that!')
-        );
+        const user = await User.findById(req.user._id);
+        // if (!user.characters.find(character => character._id === req.params.characterId)) (
+        //     res.status(403).send('You\'re not allowed to do that!')
+        // );
+        // TODO: fix this auth check
         const updatedCharacter = await Character.findByIdAndUpdate(
             req.params.characterId,
             req.body,
