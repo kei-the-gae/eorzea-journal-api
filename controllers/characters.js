@@ -141,4 +141,17 @@ router.post('/:characterId/todos', async (req, res) => {
     };
 });
 
+router.get('/:characterId/todos', async (req, res) => {
+    try {
+        const character = await Character
+            .findById(req.params.characterId)
+            .populate('todos');
+        const todos = character.todos;
+        res.status(200).json(todos);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json(err);
+    };
+});
+
 module.exports = router;
