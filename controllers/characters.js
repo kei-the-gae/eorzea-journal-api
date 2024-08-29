@@ -165,6 +165,18 @@ router.put('/:characterId/todos/:todoId', async (req, res) => {
         console.log(err);
         res.status(500).json(err);
     };
-})
+});
+
+router.delete('/:characterId/todos/:todoId', async (req, res) => {
+    try {
+        const character = await Character.findById(req.params.characterId);
+        character.todos.remove({ _id: req.params.todoId });
+        await character.save();
+        res.status(200).json({ message: 'Ok' });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json(err);
+    };
+});
 
 module.exports = router;
