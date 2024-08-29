@@ -124,4 +124,21 @@ router.put('/:characterId/jobs/:jobId', async (req, res) => {
     };
 });
 
+router.post('/:characterId/todos', async (req, res) => {
+    try {
+        const user = await User.findById(req.user._id);
+        if (!user.characters.find(({ _id }) => _id.equals(req.params.characterId))) {
+            return res.status(403).send('You\'re not allowed to do that!');
+        };
+        const character = await Character.findById(req.params.characterId);
+        character.todos.push(req.body);
+        await character.save();
+        const newTodo = character.todos[character.todos.length - 1];
+        res.status(201).json(newTodo);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json(err);
+    };
+});
+
 module.exports = router;
