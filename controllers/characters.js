@@ -154,4 +154,17 @@ router.get('/:characterId/todos', async (req, res) => {
     };
 });
 
+router.put('/:characterId/todos/:todoId', async (req, res) => {
+    try {
+        const character = await Character.findById(req.params.characterId);
+        const todo = character.todos.id(req.params.todoId);
+        todo.text = req.body.text;
+        await character.save();
+        res.status(200).json({ message: 'Ok' });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json(err);
+    };
+})
+
 module.exports = router;
