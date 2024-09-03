@@ -17,6 +17,7 @@ const todoSchema = new mongoose.Schema({
 const characterSchema = new mongoose.Schema({
     name: { type: String, required: true, },
     datacenter: { type: String, required: true, },
+    world: { type: String, required: true, },
     isStoryComplete: { type: Boolean, required: true, },
     jobs: [jobSchema],
     dutiesComplete: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Duty' }],
