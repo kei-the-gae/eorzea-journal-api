@@ -117,7 +117,7 @@ router.put('/:characterId/jobs/:jobId', async (req, res) => {
         const job = character.jobs.id(req.params.jobId);
         job.level = req.body.level;
         await character.save();
-        res.status(200).json({ message: 'Ok' });
+        res.status(200).json(character);
     } catch (err) {
         console.log(err);
         res.status(500).json(err);
